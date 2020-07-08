@@ -22,12 +22,25 @@ var BlogSchema = new mongoose.Schema({
 
 var Blog=mongoose.model("Blog",BlogSchema);
 
+//Blog.create({
+//    name:"My Shimla visit",
+//    image:"https://images.pexels.com/photos/1752417/pexels-photo-1752417.jpeg?auto=compress&cs=tinysrgb&h=350",
+//    body:"I was a windy day with clouds all over me, I felt like flying in the clouds. I saw snowfall for the first time in my life I felt so good, I would never forget that day."
+//})
+
 app.get('/',function(req,res){
         res.redirect("blogs");
 })
 app.get("/blogs",function(req,res){
-    res.render("index")
+    Blog.find(function(err,blogs){
+        if(err)
+        console.log(err)
+        else
+        res.render("index",{blogs:blogs});
+    })
 })
+
+
 
 app.listen(3000,function(){
     console.log("Server is running now")
