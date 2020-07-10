@@ -1,7 +1,6 @@
-const { urlencoded } = require('express');
-
+const express  = require('express');
 const mongoose = require('mongoose'),
-express        = require('express'),
+methodOverride = require('method-override'),
 app            = express();
 
 mongoose.connect("mongodb://localhost:27017/blog_app",{useNewUrlParser:true, useUnifiedTopology:true })
@@ -10,6 +9,7 @@ mongoose.connect("mongodb://localhost:27017/blog_app",{useNewUrlParser:true, use
 app.set("view engine", "ejs");
 app.use(express.static("public"))
 app.use(express.urlencoded({extended:true}));
+app.use(methodOverride("_method"));
 
 //SCHEMA
 
@@ -52,7 +52,7 @@ app.post("/blogs",function(req,res){
         res.redirect("/blogs");
     })
 })
-
+// SHOW PAGE
 app.get("/blogs/:id",function(req,res){
     Blog.findById(req.params.id, function(err,blog){
         if(err)
@@ -62,6 +62,25 @@ app.get("/blogs/:id",function(req,res){
     })
 })
 
-app.listen(3000,function(){
+//EDIT ROUTE
+app.get("/blogs/:id/edit",function(req,res){
+    Blog.findById(req.params.id, function(err, foundBlog){
+        if(err)
+        res.redirect("/blogs")
+        else
+        res.render("edit", {blog:foundBlog})
+    })
+})
+//UPDATE ROUTE
+app.put('/blogs/:id',function(req,res){
+    Blog.findByIdAndUpdate(req.params.id,req.body.blog, function(err,updatedBlog){
+        if(err)
+        res.redirect("/blogs")
+        else
+        res.redirect("/blogs/" +req.params.id)
+    })
+})
+
+app.listen(3001,function(){
     console.log("Server is running now")
 });
