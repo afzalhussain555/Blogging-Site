@@ -4,9 +4,8 @@ methodOverride   = require('method-override'),
 expressSanitizer = require('express-sanitizer')
 app              = express();
 
-mongoose.connect("mongodb+srv://afzal:afzal123@server.ltge7.mongodb.net/blogging?retryWrites=true&w=majority",{useNewUrlParser:true, useUnifiedTopology:true })
-//mongodb+srv://afzal:afzal123@server.ltge7.mongodb.net/blogging?retryWrites=true&w=majority
-
+var url = process.env.DATABASEURL || "mongodb://localhost:27017/blog_app"
+mongoose.connect(url,{useNewUrlParser:true, useUnifiedTopology:true })
 
 app.set("view engine", "ejs");
 app.use(express.static("public"))
@@ -98,6 +97,6 @@ app.delete('/blogs/:id',function(req, res){
 
 let port = process.env.PORT;
 if (port == null || port == "") {
-  port = 3001;
+  port = 3000;
 }
 app.listen(port);
