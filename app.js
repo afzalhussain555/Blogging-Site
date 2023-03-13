@@ -4,8 +4,9 @@ methodOverride   = require('method-override'),
 expressSanitizer = require('express-sanitizer')
 app              = express();
 
-var url = process.env.DATABASEURL || "mongodb://localhost:27017/blog_app"
-mongoose.connect(url,{useNewUrlParser:true, useUnifiedTopology:true })
+//var url = process.env.DATABASEURL || "mongodb://localhost:27017/blog_app"
+//mongoose.connect(url,{useNewUrlParser:true, useUnifiedTopology:true })
+mongoose.connect('mongodb+srv://blog:blog123@zcluster-zjjuo.mongodb.net/<dbname>?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.set("view engine", "ejs");
 app.use(express.static("public"))
